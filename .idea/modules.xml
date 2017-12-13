@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://D:\Files\projects\7semester\PostDatatoGoogleDocs-master\PostDatatoGoogleDocs.iml" filepath="D:\Files\projects\7semester\PostDatatoGoogleDocs-master\PostDatatoGoogleDocs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProjectPriceAnketa.iml" filepath="$PROJECT_DIR$/ProjectPriceAnketa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Files\projects\7semester\PostDatatoGoogleDocs-master\app\app.iml" filepath="D:\Files\projects\7semester\PostDatatoGoogleDocs-master\app\app.iml" />
+    </modules>
+  </component>
+</project>
