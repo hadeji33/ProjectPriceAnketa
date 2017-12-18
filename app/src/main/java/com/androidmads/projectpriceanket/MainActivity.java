@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     public void startAnket(View view){
         startActivity(new Intent(this, AnketAcrivity.class));
     }
+    public void getStatistics(View view) {
+        startActivity(new Intent(this, StatisticActivity.class));
+    }
     public void showProjects(View view){
         startActivity(new Intent(this, ProjectAcrivity.class));
     }

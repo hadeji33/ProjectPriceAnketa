@@ -70,6 +70,32 @@ public class DataBase {
         mDB.insert(DB_TABLE, null, cv);
     }
 
+    public modelClass getDbLine(long id){
+        String select = COLUMN_ID + " = " + id;
+        Cursor c = getAllData(select);
+        modelClass model = new modelClass();
+        if (c.moveToFirst()) {
+            model.setId(c.getInt(c.getColumnIndex(COLUMN_ID)));
+            model.setDate(c.getString(c.getColumnIndex(COLUMN_DATE)));
+            model.setName(c.getString(c.getColumnIndex(COLUMN_NAME)));
+            model.setPosted(c.getInt(c.getColumnIndex(COLUMN_POSTED)));
+            model.setText(c.getString(c.getColumnIndex(COLUMN_TXT)));
+            return model;
+        }
+        return  null;
+    }
+
+    public void updateLine (modelClass model) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_ID,model.getId());
+        cv.put(COLUMN_DATE,model.getDate());
+        cv.put(COLUMN_NAME,model.getName());
+        cv.put(COLUMN_POSTED,model.getPosted());
+        cv.put(COLUMN_TXT,model.getText());
+        mDB.update(DB_TABLE, cv,COLUMN_ID + " = " + model.getId(), null);
+
+    }
+
     public void delRec(long id) {
         mDB.delete(DB_TABLE, COLUMN_ID + " = " + id, null);
     }

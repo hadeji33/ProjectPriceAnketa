@@ -11,6 +11,7 @@ public class Constants {
 
     // Google Forms URL
     public static final String url = "https://docs.google.com/forms/d/e/1FAIpQLSePJJ28fBE1OG6R_IKMDHnHwLso14yCBzB1UyIzhxkg0Yp-3w/formResponse";
+    public static final String statistics_url = "https://docs.google.com/forms/d/e/1FAIpQLSePJJ28fBE1OG6R_IKMDHnHwLso14yCBzB1UyIzhxkg0Yp-3w/viewanalytics";
 
     // Google Form's Column ID
     public static final String nameField = "entry.1896032765";
