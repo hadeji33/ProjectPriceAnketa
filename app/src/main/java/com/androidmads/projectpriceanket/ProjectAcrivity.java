@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
     SimpleCursorAdapter scAdapter;
     Cursor cursor;
     Switch sv;
+
     String selection = "posted = 1";
     private static final int CM_DELETE_ID = 1;
     ProgressDialog progressDialog;

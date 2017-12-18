@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -46,7 +47,7 @@ public class AnketAcrivity extends AppCompatActivity {
     DataBase db;
     RequestQueue queue;
     Map<String, String> lastParams = new HashMap<>();
-
+    Map<String, String> result = new HashMap<>();
 
     private FirebaseAuth mAuth;
 
@@ -92,7 +93,11 @@ public class AnketAcrivity extends AppCompatActivity {
                         db.addRec(edtName.getText().toString(), fullMap(lastParams),false);
                     }
                     db.close();
-                    startActivity(new Intent(AnketAcrivity.this, MainActivity.class));
+
+                    Intent intent = new Intent(AnketAcrivity.this, TotalPriceActivity.class);
+                    intent.putExtra("key", result.toString());
+                    startActivity(intent);
+
                 } else {
                     Snackbar.make(view, "Не заполнены обязательные поля", Snackbar.LENGTH_LONG).show();
                 }
@@ -104,6 +109,7 @@ public class AnketAcrivity extends AppCompatActivity {
     public Map<String, String> fullMap(Map<String, String> params){
 
         double restruct, siteType, cmsType, projectType, projectPrice;
+        String mobile;
 
         params.put(Constants.nameField, edtName.getText().toString().trim());
         params.put(Constants.phoneField, edtPhone.getText().toString().trim());
@@ -129,12 +135,33 @@ public class AnketAcrivity extends AppCompatActivity {
 
         checkedRadioButtonId = radioProjectType.getCheckedRadioButtonId();
         myRadioButton = (RadioButton) findViewById(checkedRadioButtonId);
+        mobile = myRadioButton.getText().toString();
         projectType = Double.parseDouble(myRadioButton.getContentDescription().toString());
         params.put(Constants.projectTypeFiels,myRadioButton.getText().toString().trim());
 
         projectPrice = siteType * projectType * restruct + cmsType;
         String s = "";
         params.put(Constants.projectPrice, s.valueOf(projectPrice));
+
+        s = "";
+        result.put("totalPrice",s.valueOf(projectPrice));
+        if (mobile.equals("Мобильное приложение")){
+            result.put("mobileApp",s.valueOf(projectPrice));
+            projectPrice = 0;
+            cmsType = 0;
+        } else if(mobile.equals("Сайт + Мобильное приложение")) {
+            projectPrice = projectPrice - cmsType;
+            result.put("mobileApp",s.valueOf(projectPrice*0.7));
+            projectPrice = projectPrice - projectPrice*0.7;
+        } else  if(mobile.equals("Сайт")) {
+            result.put("mobileApp", s.valueOf(0));
+        }
+        result.put("cmsPrice",s.valueOf(cmsType));
+
+        result.put("design",s.valueOf(projectPrice*0.3));
+        result.put("programming",s.valueOf(projectPrice*0.5));
+        result.put("filling",s.valueOf(projectPrice*0.2));
+
 
         return params;
     }
