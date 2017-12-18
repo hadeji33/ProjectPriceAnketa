@@ -37,7 +37,8 @@
         <activity
             android:name=".ProjectAcrivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".StatisticActivity"></activity>
+        <activity android:name=".StatisticActivity" />
+        <activity android:name=".TotalPriceActivity"></activity>
     </application>
 
 </manifest>

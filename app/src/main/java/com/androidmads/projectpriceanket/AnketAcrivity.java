@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -27,17 +30,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by lairg on 10.12.2017.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class AnketAcrivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     FloatingActionButton fab;
-    EditText edtName, edtPhone, edtCms, edtFio;
-    RadioGroup radioProjectType, radioRestruct, radioSiteType;
+    EditText edtName, edtPhone, edtFio;
+    RadioGroup radioProjectType, radioRestruct, radioSiteType, edtCms;
     DataBase db;
     RequestQueue queue;
     Map<String, String> lastParams = new HashMap<>();
@@ -65,9 +70,8 @@ public class AnketAcrivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         edtName = (EditText) findViewById(R.id.edtName);
         edtPhone = (EditText) findViewById(R.id.edtPhone);
-        edtCms = (EditText) findViewById(R.id.edtCms);
         edtFio = (EditText) findViewById(R.id.edtFio);
-
+        edtCms = (RadioGroup) findViewById(R.id.edtCms);
         radioRestruct = (RadioGroup) findViewById(R.id.radioRestruct);
         radioProjectType = (RadioGroup) findViewById(R.id.radioProjectType);
         radioSiteType = (RadioGroup) findViewById(R.id.radioSiteType);
@@ -98,28 +102,40 @@ public class AnketAcrivity extends AppCompatActivity {
     }
 
     public Map<String, String> fullMap(Map<String, String> params){
+
+        double restruct, siteType, cmsType, projectType, projectPrice;
+
         params.put(Constants.nameField, edtName.getText().toString().trim());
         params.put(Constants.phoneField, edtPhone.getText().toString().trim());
         params.put(Constants.fioField, edtFio.getText().toString().trim());
-        params.put(Constants.cmsField, edtCms.getText().toString().trim());
+
+        //params.put(Constants.cmsField, edtCms.getText().toString().trim());
 
         int checkedRadioButtonId = radioRestruct.getCheckedRadioButtonId();
         RadioButton myRadioButton = (RadioButton) findViewById(checkedRadioButtonId);
+        restruct = Double.parseDouble(myRadioButton.getContentDescription().toString());
         params.put(Constants.restructField,myRadioButton.getText().toString().trim());
 
         checkedRadioButtonId = radioSiteType.getCheckedRadioButtonId();
         myRadioButton = (RadioButton) findViewById(checkedRadioButtonId);
+        siteType = Double.parseDouble(myRadioButton.getContentDescription().toString());
         params.put(Constants.siteTypeFiels,myRadioButton.getText().toString().trim());
-        String s = myRadioButton.getContentDescription().toString().trim();
 
-        for(int i = 1; i < radioProjectType.getChildCount(); i++){
+        checkedRadioButtonId = edtCms.getCheckedRadioButtonId();
+        myRadioButton = (RadioButton) findViewById(checkedRadioButtonId);
+        cmsType = Double.parseDouble(myRadioButton.getContentDescription().toString());
+        params.put(Constants.cmsField,myRadioButton.getText().toString().trim());
 
-            CheckBox cb = (CheckBox) radioProjectType.getChildAt(i);
-            if (cb.isChecked()){
-                params.put(Constants.projectTypeFiels,cb.getText().toString().trim());
-            }
 
-        }
+        checkedRadioButtonId = radioProjectType.getCheckedRadioButtonId();
+        myRadioButton = (RadioButton) findViewById(checkedRadioButtonId);
+        projectType = Double.parseDouble(myRadioButton.getContentDescription().toString());
+        params.put(Constants.projectTypeFiels,myRadioButton.getText().toString().trim());
+
+        projectPrice = siteType * projectType * restruct + cmsType;
+        String s = "";
+        params.put(Constants.projectPrice, s.valueOf(projectPrice));
+
         return params;
     }
 
@@ -145,11 +161,10 @@ public class AnketAcrivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.d("TAG", "Response: " + response);
                         if (response.length() > 0) {
-                            Snackbar.make(fab, "Successfully Posted", Snackbar.LENGTH_LONG).show();
-                            edtName.setText(null);
-                            edtPhone.setText(null);
+                            Toast.makeText(AnketAcrivity.this, "Анкета успешно заполнена", Snackbar.LENGTH_LONG).show();
+
                         } else {
-                            Snackbar.make(fab, "Try Again", Snackbar.LENGTH_LONG).show();
+                            Toast.makeText(AnketAcrivity.this, "Попробуйте еще раз", Snackbar.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }
@@ -158,7 +173,7 @@ public class AnketAcrivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Snackbar.make(fab, "Error while Posting Data", Snackbar.LENGTH_LONG).show();
+                Toast.makeText(AnketAcrivity.this, "Ошибка при отправке данных анкеты", Snackbar.LENGTH_LONG).show();
             }
         }) {
             @Override

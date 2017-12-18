@@ -21,6 +21,7 @@ public class Constants {
     public static final String restructField = "entry.734301943";
     public static final String projectTypeFiels = "entry.1619358544";
     public static final String siteTypeFiels = "entry.1100424901";
+    public static final String projectPrice = "entry.525273203";
 
     public static boolean isOnline(Context context)
     {

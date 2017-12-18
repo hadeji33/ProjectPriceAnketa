@@ -77,21 +77,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:contentDescription="10000"
+                    android:contentDescription="1"
                     android:text="Да" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Нет"
-                    tools:text="0" />
+                    android:contentDescription="1"
+                    android:text="Нет" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:contentDescription="8000"
+                    android:contentDescription="0,7"
                     android:text="Нужно немного отредактировать текущий (на своей CMS)" />
 
 
@@ -110,49 +110,96 @@
                     android:layout_weight="1"
                     android:text="Что необходимо разработать" />
 
-                <CheckBox
+                <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:contentDescription="1000"
+                    android:contentDescription="1"
                     android:text="Сайт" />
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:contentDescription="150000"
+                    android:contentDescription="3"
                     android:text="Мобильное приложение" />
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/checkBox2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:contentDescription="0"
-                    android:text="Другое" />
+                    android:contentDescription="4"
+                    android:text="Сайт + Мобильное приложение" />
             </RadioGroup>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/edtCms"
-                    android:layout_width="match_parent"
+
+            <RadioGroup
+                android:id="@+id/edtCms"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@android:dimen/app_icon_size"
+                android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="На какой CMS находися старый сайт"
-                    android:maxLength="10" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight="1"
+                    android:text="На какой CMS находися старый сайт" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="2000"
+                    android:text="Wordpress" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="1500"
+                    android:text="Joomla" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="2000"
+                    android:text="Dropall" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="13499"
+                    android:text="1C Bitrix" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="3200"
+                    android:text="Mod X" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="4000"
+                    android:text="Другое" />
+
+
+            </RadioGroup>
 
             <RadioGroup
                 android:id="@+id/radioSiteType"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@android:dimen/app_icon_size"
-                android:layout_marginTop="@dimen/activity_horizontal_margin">
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
