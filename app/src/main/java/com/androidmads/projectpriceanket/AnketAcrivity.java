@@ -110,6 +110,7 @@ public class AnketAcrivity extends AppCompatActivity {
         checkedRadioButtonId = radioSiteType.getCheckedRadioButtonId();
         myRadioButton = (RadioButton) findViewById(checkedRadioButtonId);
         params.put(Constants.siteTypeFiels,myRadioButton.getText().toString().trim());
+        String s = myRadioButton.getContentDescription().toString().trim();
 
         for(int i = 1; i < radioProjectType.getChildCount(); i++){
 

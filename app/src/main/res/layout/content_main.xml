@@ -77,18 +77,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="10000"
                     android:text="Да" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Нет" />
+                    android:text="Нет"
+                    tools:text="0" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="8000"
                     android:text="Нужно немного отредактировать текущий (на своей CMS)" />
 
 
@@ -111,6 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="1000"
                     android:text="Сайт" />
 
                 <CheckBox
@@ -118,6 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="150000"
                     android:text="Мобильное приложение" />
 
                 <CheckBox
@@ -125,6 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="0"
                     android:text="Другое" />
             </RadioGroup>
 
@@ -158,30 +164,35 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="10000"
                     android:text="Посадочная страница" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="8889"
                     android:text="Сайт-визитка с несколькими страницами" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="12310"
                     android:text="Каталог продукции" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="14899"
                     android:text="Интернет-магазин" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="8990"
                     android:text="Галерея товаров" />
 
 
