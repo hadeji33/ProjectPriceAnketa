@@ -11,6 +11,7 @@ public class Constants {
 
     // Google Forms URL
     public static final String url = "https://docs.google.com/forms/d/e/1FAIpQLSePJJ28fBE1OG6R_IKMDHnHwLso14yCBzB1UyIzhxkg0Yp-3w/formResponse";
+    public static final String statistics_url = "https://docs.google.com/forms/d/e/1FAIpQLSePJJ28fBE1OG6R_IKMDHnHwLso14yCBzB1UyIzhxkg0Yp-3w/viewanalytics";
 
     // Google Form's Column ID
     public static final String nameField = "entry.1896032765";
@@ -20,6 +21,7 @@ public class Constants {
     public static final String restructField = "entry.734301943";
     public static final String projectTypeFiels = "entry.1619358544";
     public static final String siteTypeFiels = "entry.1100424901";
+    public static final String projectPrice = "entry.525273203";
 
     public static boolean isOnline(Context context)
     {
@@ -31,5 +33,13 @@ public class Constants {
             return true;
         }
         return false;
+    }
+
+    public static float round(double number, int scale) {
+        int pow = 10;
+        for (int i = 1; i < scale; i++)
+            pow *= 10;
+        float tmp = (float) number * pow;
+        return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
     }
 }

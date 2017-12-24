@@ -23,12 +23,13 @@ public class DataBase {
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_POSTED = "posted";
     public static final String COLUMN_TXT = "text";
+    public static final String COLUMN_RESULT = "result";
 
     private static final String DB_CREATE =
             "create table " + DB_TABLE + "(" +
                     COLUMN_ID + " integer primary key autoincrement, " +
                     COLUMN_NAME + " text, " + COLUMN_DATE + " text, " + COLUMN_POSTED + " integer," +
-                    COLUMN_TXT + " text" +
+                    COLUMN_TXT + " text, " + COLUMN_RESULT + " text" +
                     ");";
 
     private final Context mCtx;
@@ -53,9 +54,10 @@ public class DataBase {
         return mDB.query(DB_TABLE, null, selection, null, null, null, null);
     }
 
-    public void addRec(String name, Map<String, String> map, boolean online) {
+    public void addRec(String name, Map<String, String> map, boolean online, Map<String, String> result) {
 
         String orgmap = map.toString();
+        String res = result.toString();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_NAME, name);
         long time = System.currentTimeMillis();
@@ -67,7 +69,35 @@ public class DataBase {
         }
         cv.put(COLUMN_POSTED,p);
         cv.put(COLUMN_TXT, orgmap);
+        cv.put(COLUMN_RESULT, res);
         mDB.insert(DB_TABLE, null, cv);
+    }
+
+    public modelClass getDbLine(long id){
+        String select = COLUMN_ID + " = " + id;
+        Cursor c = getAllData(select);
+        modelClass model = new modelClass();
+        if (c.moveToFirst()) {
+            model.setId(c.getInt(c.getColumnIndex(COLUMN_ID)));
+            model.setDate(c.getString(c.getColumnIndex(COLUMN_DATE)));
+            model.setName(c.getString(c.getColumnIndex(COLUMN_NAME)));
+            model.setPosted(c.getInt(c.getColumnIndex(COLUMN_POSTED)));
+            model.setText(c.getString(c.getColumnIndex(COLUMN_TXT)));
+            model.setResult(c.getString(c.getColumnIndex(COLUMN_RESULT)));
+            return model;
+        }
+        return  null;
+    }
+
+    public void updateLine (modelClass model) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_ID,model.getId());
+        cv.put(COLUMN_DATE,model.getDate());
+        cv.put(COLUMN_NAME,model.getName());
+        cv.put(COLUMN_POSTED,model.getPosted());
+        cv.put(COLUMN_TXT,model.getText());
+        mDB.update(DB_TABLE, cv,COLUMN_ID + " = " + model.getId(), null);
+
     }
 
     public void delRec(long id) {

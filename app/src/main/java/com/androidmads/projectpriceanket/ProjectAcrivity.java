@@ -1,10 +1,14 @@
 package com.androidmads.projectpriceanket;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.Snackbar;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +17,18 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Switch;
+import android.widget.Toast;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProjectAcrivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
@@ -21,14 +37,20 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
     SimpleCursorAdapter scAdapter;
     Cursor cursor;
     Switch sv;
+
     String selection = "posted = 1";
     private static final int CM_DELETE_ID = 1;
+    ProgressDialog progressDialog;
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Загрузка...");
         sv = (Switch) findViewById(R.id.switch1);
 
         if (savedInstanceState != null) {
@@ -38,6 +60,7 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
         }
         db = new DataBase(this);
         db.open();
+        queue = Volley.newRequestQueue(getApplicationContext());
 
 
         cursor = db.getAllData(selection);
@@ -58,6 +81,20 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
         if (sv != null) {
             sv.setOnCheckedChangeListener(this);
         }
+
+        lvData.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+            {
+                modelClass thisLine = db.getDbLine(position);
+                modelClass thisLine1 = db.getDbLine(id);
+
+                Intent intent = new Intent(ProjectAcrivity.this, TotalPriceActivity.class);
+                intent.putExtra("key", thisLine1.convertTextToMap(thisLine1.getResult()).toString());
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -72,16 +109,26 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
     }
 
     public boolean onContextItemSelected(MenuItem item) {
-        if (item.getItemId() == CM_DELETE_ID) {
-
         AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if (item.getItemId() == CM_DELETE_ID) {
         db.delRec(acmi.id);
         cursor.requery();
-
         return true;
+        } else if (item.getItemId() == 2){
+            modelClass thisLine = db.getDbLine(acmi.id);
+            Map<String,String> modelParams = thisLine.convertTextToMap(thisLine.getText());
+            try{
+                postData(modelParams,thisLine);
+            } catch (Exception e){
+                Log.d("Exception", "Не удалось синхронизировать");
+            }
+
+            return true;
+        }
+        return super.onContextItemSelected(item);
     }
-    return super.onContextItemSelected(item);
-    }
+
+
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -107,5 +154,53 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
 
 
 
+    }
+
+
+    public void postData(final Map<String,String> params, final modelClass thisLine) {
+
+        progressDialog.show();
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("TAG", "Response: " + response);
+                        if (response.length() > 0) {
+                            Toast.makeText(ProjectAcrivity.this, "Успешно синхронизировано", Snackbar.LENGTH_LONG).show();
+                            thisLine.setPosted(1);
+                            db.updateLine(thisLine);
+                            cursor.requery();
+                        } else {
+                            Toast.makeText(ProjectAcrivity.this, "Try Again", Snackbar.LENGTH_LONG).show();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(ProjectAcrivity.this, "Не удалось синхронизировать", Snackbar.LENGTH_LONG).show();
+                Exception e = new Exception();
+                try {
+                    throw e;
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
     }
 }
