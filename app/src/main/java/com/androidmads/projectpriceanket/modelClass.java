@@ -14,10 +14,11 @@ public class modelClass {
     private String date;
     private int posted;
     private String text;
+    private String result;
 
-    public Map<String,String> convertTextToMap (){
+    public Map<String,String> convertTextToMap (String text){
         Map<String,String> data = new HashMap<String,String>();
-        String str = getText().replace("{", "").replace("}", "");
+        String str = text.replace("{", "").replace("}", "");
         String[] arr = str.split(", ");
         for (String mapline : arr) {
             String[] splited = mapline.split("=");
@@ -64,5 +65,13 @@ public class modelClass {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 }

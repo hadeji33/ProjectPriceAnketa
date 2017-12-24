@@ -81,6 +81,20 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
         if (sv != null) {
             sv.setOnCheckedChangeListener(this);
         }
+
+        lvData.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+            {
+                modelClass thisLine = db.getDbLine(position);
+                modelClass thisLine1 = db.getDbLine(id);
+
+                Intent intent = new Intent(ProjectAcrivity.this, TotalPriceActivity.class);
+                intent.putExtra("key", thisLine1.convertTextToMap(thisLine1.getResult()).toString());
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -95,7 +109,6 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
     }
 
     public boolean onContextItemSelected(MenuItem item) {
-
         AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         if (item.getItemId() == CM_DELETE_ID) {
         db.delRec(acmi.id);
@@ -103,7 +116,7 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
         return true;
         } else if (item.getItemId() == 2){
             modelClass thisLine = db.getDbLine(acmi.id);
-            Map<String,String> modelParams = thisLine.convertTextToMap();
+            Map<String,String> modelParams = thisLine.convertTextToMap(thisLine.getText());
             try{
                 postData(modelParams,thisLine);
             } catch (Exception e){
@@ -114,6 +127,8 @@ public class ProjectAcrivity extends AppCompatActivity implements CompoundButton
         }
         return super.onContextItemSelected(item);
     }
+
+
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

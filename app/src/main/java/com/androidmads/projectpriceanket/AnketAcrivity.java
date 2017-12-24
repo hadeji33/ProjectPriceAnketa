@@ -87,10 +87,10 @@ public class AnketAcrivity extends AppCompatActivity {
                     if(Constants.isOnline(AnketAcrivity.this)) {
                     db.open();
                         postData();
-                        db.addRec(edtName.getText().toString(), fullMap(lastParams),true);
+                        db.addRec(edtName.getText().toString(), fullMap(lastParams),true, result);
                     }
                     else {
-                        db.addRec(edtName.getText().toString(), fullMap(lastParams),false);
+                        db.addRec(edtName.getText().toString(), fullMap(lastParams),false, result);
                     }
                     db.close();
 
@@ -151,16 +151,16 @@ public class AnketAcrivity extends AppCompatActivity {
             cmsType = 0;
         } else if(mobile.equals("Сайт + Мобильное приложение")) {
             projectPrice = projectPrice - cmsType;
-            result.put("mobileApp",s.valueOf(projectPrice*0.7));
-            projectPrice = projectPrice - projectPrice*0.7;
+            result.put("mobileApp",s.valueOf(Constants.round(projectPrice*0.7,2)));
+            projectPrice = projectPrice - Constants.round(projectPrice*0.7,2);
         } else  if(mobile.equals("Сайт")) {
             result.put("mobileApp", s.valueOf(0));
         }
         result.put("cmsPrice",s.valueOf(cmsType));
 
-        result.put("design",s.valueOf(projectPrice*0.3));
-        result.put("programming",s.valueOf(projectPrice*0.5));
-        result.put("filling",s.valueOf(projectPrice*0.2));
+        result.put("design",s.valueOf(Constants.round(projectPrice*0.3, 2)));
+        result.put("programming",s.valueOf(Constants.round(projectPrice*0.5,2)));
+        result.put("filling",s.valueOf(Constants.round(projectPrice*0.2,2)));
 
 
         return params;

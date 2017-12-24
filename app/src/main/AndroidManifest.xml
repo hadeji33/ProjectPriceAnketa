@@ -29,16 +29,23 @@
         </activity>
         <activity
             android:name=".AnketAcrivity"
-            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity"
+            android:label="Анкета проекта"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity
             android:name=".ProjectAcrivity"
+            android:label="Список проектов"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".StatisticActivity" />
-        <activity android:name=".TotalPriceActivity"></activity>
+        <activity android:name=".StatisticActivity"
+            android:label="Статистика по анкетам"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".TotalPriceActivity"
+            android:label="Итоговая стоимость проекта"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>
